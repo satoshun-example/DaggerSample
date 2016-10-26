@@ -10,8 +10,11 @@ import com.github.satoshun.sample.dagger.R;
 import com.github.satoshun.sample.dagger.SampleApplication;
 import com.github.satoshun.sample.dagger.SubActivityComponent;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SubActivity extends AppCompatActivity {
@@ -27,7 +30,10 @@ public class SubActivity extends AppCompatActivity {
 
     SampleApplication.getSubActivityBuilder(this)
             .activityModule(new SubActivityComponent.SubActivityModule(this))
-            .build().inject(this);
+            .build().injectMembers(this);
+    disposables.add(Observable.timer(10, TimeUnit.SECONDS)
+            .repeat(10)
+            .subscribe());
   }
 
   @Override protected void onDestroy() {

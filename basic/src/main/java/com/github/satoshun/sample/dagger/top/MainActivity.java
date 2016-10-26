@@ -10,8 +10,11 @@ import com.github.satoshun.sample.dagger.MainActivityComponent;
 import com.github.satoshun.sample.dagger.R;
 import com.github.satoshun.sample.dagger.SampleApplication;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    SampleApplication
-            .getMainActivityBuilder(this)
+    SampleApplication.getMainActivityBuilder(this)
             .activityModule(new MainActivityComponent.MainActivityModule(this))
-            .build().inject(this);
+            .build().injectMembers(this);
+    disposables.add(Observable.timer(10, TimeUnit.SECONDS)
+            .repeat(10)
+            .subscribe());
   }
 
   @Override protected void onDestroy() {
