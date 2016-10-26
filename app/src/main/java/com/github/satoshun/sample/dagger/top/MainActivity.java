@@ -1,15 +1,22 @@
-package com.github.satoshun.sample.dagger;
+package com.github.satoshun.sample.dagger.top;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.satoshun.sample.dagger.MainActivityComponent;
+import com.github.satoshun.sample.dagger.R;
+import com.github.satoshun.sample.dagger.SampleApplication;
+
+import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
+
 public class MainActivity extends AppCompatActivity {
+
+  @Inject CompositeDisposable disposables;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -18,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show());
+    SampleApplication
+            .getBuilder(this)
+            .activityModule(new MainActivityComponent.MainActivityModule(this))
+            .build().inject(this);
   }
 
   @Override
