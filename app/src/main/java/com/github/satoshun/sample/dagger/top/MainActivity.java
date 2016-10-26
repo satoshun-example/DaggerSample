@@ -26,9 +26,14 @@ public class MainActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
 
     SampleApplication
-            .getBuilder(this)
+            .getMainActivityBuilder(this)
             .activityModule(new MainActivityComponent.MainActivityModule(this))
             .build().inject(this);
+  }
+
+  @Override protected void onDestroy() {
+    disposables.clear();
+    super.onDestroy();
   }
 
   @Override

@@ -19,9 +19,6 @@ public class SampleApplication extends Application {
     component.inject(this);
   }
 
-  public static AppComponent getAppComponent(Context context) {
-    return ((SampleApplication) context.getApplicationContext()).component;
-  }
 
   public static MainActivityComponent.Builder getBuilder(Context context) {
     return ((SampleApplication) context.getApplicationContext()).builder;
