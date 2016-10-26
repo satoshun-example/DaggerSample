@@ -9,7 +9,8 @@ public class SampleApplication extends Application {
 
   private AppComponent component;
 
-  @Inject MainActivityComponent.Builder builder;
+  @Inject MainActivityComponent.Builder mainBuilder;
+  @Inject SubActivityComponent.Builder subBuilder;
 
   public void onCreate() {
     super.onCreate();
@@ -19,8 +20,11 @@ public class SampleApplication extends Application {
     component.inject(this);
   }
 
+  public static MainActivityComponent.Builder getMainActivityBuilder(Context context) {
+    return ((SampleApplication) context.getApplicationContext()).mainBuilder;
+  }
 
-  public static MainActivityComponent.Builder getBuilder(Context context) {
-    return ((SampleApplication) context.getApplicationContext()).builder;
+  public static SubActivityComponent.Builder getSubActivityBuilder(Context context) {
+    return ((SampleApplication) context.getApplicationContext()).subBuilder;
   }
 }
