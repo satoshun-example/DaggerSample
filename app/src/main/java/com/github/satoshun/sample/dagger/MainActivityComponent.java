@@ -30,11 +30,11 @@ public interface MainActivityComponent {
       this.activity = activity;
     }
 
-    @Provides @ActivityScope Activity provideActivity() {
+    @Provides @ActivityScope public Activity provideActivity() {
       return activity;
     }
 
-    @Provides @ActivityScope CompositeDisposable provideCompositeDisposable() {
+    @Provides @ActivityScope public static CompositeDisposable provideCompositeDisposable() {
       return new CompositeDisposable();
     }
   }

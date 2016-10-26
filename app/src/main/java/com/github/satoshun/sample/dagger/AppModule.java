@@ -11,7 +11,7 @@ import okhttp3.OkHttpClient;
 @Module
 public class AppModule {
 
-  @Singleton @Provides OkHttpClient provideOkHttpClient() {
+  @Singleton @Provides public static OkHttpClient provideOkHttpClient() {
     return new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
