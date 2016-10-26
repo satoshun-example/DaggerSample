@@ -1,7 +1,5 @@
 package com.github.satoshun.sample.dagger;
 
-import android.app.Activity;
-
 import com.github.satoshun.sample.dagger.sub.SubActivity;
 
 import dagger.Module;
@@ -14,24 +12,17 @@ import io.reactivex.disposables.CompositeDisposable;
 public interface SubActivityComponent {
 
   @Subcomponent.Builder
-  interface Builder {
+  interface Builder extends BaseBuilder<SubActivityComponent> {
     Builder activityModule(SubActivityModule module);
-
-    SubActivityComponent build();
   }
 
   SubActivity inject(SubActivity activity);
 
   @Module
-  class SubActivityModule {
-    private final Activity activity;
+  class SubActivityModule extends BaseActivityModule<SubActivity> {
 
-    public SubActivityModule(Activity activity) {
-      this.activity = activity;
-    }
-
-    @Provides @ActivityScope public Activity provideActivity() {
-      return activity;
+    public SubActivityModule(SubActivity activity) {
+      super(activity);
     }
 
     @Provides @ActivityScope public static CompositeDisposable provideCompositeDisposable() {

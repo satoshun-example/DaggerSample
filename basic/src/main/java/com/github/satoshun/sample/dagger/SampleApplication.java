@@ -7,17 +7,14 @@ import javax.inject.Inject;
 
 public class SampleApplication extends Application {
 
-  private AppComponent component;
-
   @Inject MainActivityComponent.Builder mainBuilder;
   @Inject SubActivityComponent.Builder subBuilder;
 
   public void onCreate() {
     super.onCreate();
 
-    component = DaggerAppComponent.builder()
-            .build();
-    component.inject(this);
+    DaggerAppComponent.builder()
+            .build().inject(this);
   }
 
   public static MainActivityComponent.Builder getMainActivityBuilder(Context context) {

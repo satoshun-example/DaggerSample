@@ -12,6 +12,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Qualifier
 @Documented
 @Retention(RUNTIME)
-public @interface NamedClass {
+public @interface QualifierClass {
   Class<? extends Activity> value();
 }
