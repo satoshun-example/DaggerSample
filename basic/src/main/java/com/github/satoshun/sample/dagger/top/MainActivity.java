@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   @Override protected void onDestroy() {
+    // release all tasks.
     disposables.clear();
     super.onDestroy();
   }
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
   @ActivityScope
   public static class SampleAdapter extends RecyclerView.Adapter<SampleViewHolder> {
+
+    // this is a ActivityScope CompositeDisposable, Live along with the Activity LifeCycle.
+    @Inject CompositeDisposable disposables;
 
     private final Context context;
     private final List<Integer> counts = new ArrayList<>();
@@ -83,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override public void onBindViewHolder(SampleViewHolder holder, int position) {
       holder.parentView.setText(String.valueOf(position));
+
+      // simulates a heavy task
+      disposables.add(Observable.timer(10, TimeUnit.SECONDS).subscribe());
     }
 
     @Override public int getItemCount() {
