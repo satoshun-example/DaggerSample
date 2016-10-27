@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.satoshun.sample.dagger.ActivityScope;
 import com.github.satoshun.sample.dagger.MainActivityComponent;
 import com.github.satoshun.sample.dagger.R;
 import com.github.satoshun.sample.dagger.SampleApplication;
@@ -28,8 +29,7 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
 
   @Inject CompositeDisposable disposables;
-
-  private SampleAdapter adapter;
+  @Inject SampleAdapter adapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             }));
 
     RecyclerView view = (RecyclerView) findViewById(R.id.content);
-    adapter = new SampleAdapter(this);
     view.setAdapter(adapter);
   }
 
@@ -67,11 +66,13 @@ public class MainActivity extends AppCompatActivity {
     return true;
   }
 
+  @ActivityScope
   public static class SampleAdapter extends RecyclerView.Adapter<SampleViewHolder> {
 
     private final Context context;
     private final List<Integer> counts = new ArrayList<>();
 
+    @Inject
     public SampleAdapter(Context context) {
       this.context = context;
     }
