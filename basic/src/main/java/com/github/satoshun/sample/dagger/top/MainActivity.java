@@ -1,25 +1,35 @@
 package com.github.satoshun.sample.dagger.top;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.satoshun.sample.dagger.MainActivityComponent;
 import com.github.satoshun.sample.dagger.R;
 import com.github.satoshun.sample.dagger.SampleApplication;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
   @Inject CompositeDisposable disposables;
+
+  private SampleAdapter adapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +41,19 @@ public class MainActivity extends AppCompatActivity {
     SampleApplication.getMainActivityBuilder(this)
             .activityModule(new MainActivityComponent.MainActivityModule(this))
             .build().injectMembers(this);
-    disposables.add(Observable.timer(10, TimeUnit.SECONDS)
-            .repeat(10)
-            .subscribe());
+    disposables.add(Observable.timer(1, TimeUnit.SECONDS)
+            .repeat(100)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Consumer<Long>() {
+              @Override public void accept(Long aLong) throws Exception {
+                adapter.countup();
+              }
+            }));
+
+    RecyclerView view = (RecyclerView) findViewById(R.id.content);
+    adapter = new SampleAdapter(this);
+    view.setAdapter(adapter);
   }
 
   @Override protected void onDestroy() {
@@ -47,14 +67,40 @@ public class MainActivity extends AppCompatActivity {
     return true;
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
+  public static class SampleAdapter extends RecyclerView.Adapter<SampleViewHolder> {
 
-    if (id == R.id.action_settings) {
-      return true;
+    private final Context context;
+    private final List<Integer> counts = new ArrayList<>();
+
+    public SampleAdapter(Context context) {
+      this.context = context;
     }
 
-    return super.onOptionsItemSelected(item);
+    @Override public SampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return new SampleViewHolder(new TextView(context));
+    }
+
+    @Override public void onBindViewHolder(SampleViewHolder holder, int position) {
+      holder.parentView.setText(String.valueOf(position));
+    }
+
+    @Override public int getItemCount() {
+      return counts.size();
+    }
+
+    void countup() {
+      counts.add(0);
+      notifyDataSetChanged();
+    }
+  }
+
+  private static class SampleViewHolder extends RecyclerView.ViewHolder {
+
+    private final TextView parentView;
+
+    public SampleViewHolder(TextView itemView) {
+      super(itemView);
+      this.parentView = itemView;
+    }
   }
 }
