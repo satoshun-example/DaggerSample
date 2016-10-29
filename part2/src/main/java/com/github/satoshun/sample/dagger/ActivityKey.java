@@ -5,13 +5,13 @@ import android.app.Activity;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 
-import javax.inject.Qualifier;
+import dagger.MapKey;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Qualifier
+@MapKey
 @Documented
 @Retention(RUNTIME)
-public @interface QualifierClass {
+public @interface ActivityKey {
   Class<? extends Activity> value();
 }

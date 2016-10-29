@@ -28,7 +28,7 @@ public class SubActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    SampleApplication.getSubActivityBuilder(this)
+    ((SubActivityComponent.Builder) SampleApplication.activityBuilder(this, SubActivity.class))
             .activityModule(new SubActivityComponent.SubActivityModule(this))
             .build().injectMembers(this);
     disposables.add(Observable.timer(10, TimeUnit.SECONDS)
@@ -36,7 +36,8 @@ public class SubActivity extends AppCompatActivity {
             .subscribe());
   }
 
-  @Override protected void onDestroy() {
+  @Override
+  protected void onDestroy() {
     disposables.clear();
     super.onDestroy();
   }

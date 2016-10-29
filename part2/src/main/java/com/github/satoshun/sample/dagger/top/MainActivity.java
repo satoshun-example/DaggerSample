@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    SampleApplication.getMainActivityBuilder(this)
+    ((MainActivityComponent.Builder) SampleApplication.activityBuilder(this, MainActivity.class))
             .activityModule(new MainActivityComponent.MainActivityModule(this))
             .build().injectMembers(this);
     disposables.add(Observable.timer(1, TimeUnit.SECONDS)
@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Consumer<Long>() {
-              @Override public void accept(Long aLong) throws Exception {
+              @Override
+              public void accept(Long aLong) throws Exception {
                 adapter.countup();
               }
             }));
@@ -55,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
     view.setAdapter(adapter);
   }
 
-  @Override protected void onDestroy() {
+  @Override
+  protected void onDestroy() {
     // release all tasks.
     disposables.clear();
     super.onDestroy();
@@ -81,18 +83,21 @@ public class MainActivity extends AppCompatActivity {
       this.context = context;
     }
 
-    @Override public SampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public SampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
       return new SampleViewHolder(new TextView(context));
     }
 
-    @Override public void onBindViewHolder(SampleViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(SampleViewHolder holder, int position) {
       holder.parentView.setText(String.valueOf(position));
 
       // simulates a heavy task
       disposables.add(Observable.timer(10, TimeUnit.SECONDS).subscribe());
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
       return counts.size();
     }
 

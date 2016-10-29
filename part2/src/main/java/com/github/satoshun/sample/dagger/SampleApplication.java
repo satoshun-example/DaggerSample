@@ -1,14 +1,16 @@
 package com.github.satoshun.sample.dagger;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
 public class SampleApplication extends Application {
 
-  @Inject MainActivityComponent.Builder mainBuilder;
-  @Inject SubActivityComponent.Builder subBuilder;
+  @Inject Map<Class<? extends Activity>, BaseBuilder> builders;
 
   public void onCreate() {
     super.onCreate();
@@ -17,11 +19,8 @@ public class SampleApplication extends Application {
             .build().inject(this);
   }
 
-  public static MainActivityComponent.Builder getMainActivityBuilder(Context context) {
-    return ((SampleApplication) context.getApplicationContext()).mainBuilder;
-  }
-
-  public static SubActivityComponent.Builder getSubActivityBuilder(Context context) {
-    return ((SampleApplication) context.getApplicationContext()).subBuilder;
+  @SuppressWarnings("unchecked")
+  public static <T extends BaseBuilder> T activityBuilder(Context context, Class<? extends Activity> activityClass) {
+    return (T) ((SampleApplication) context.getApplicationContext()).builders.get(activityClass);
   }
 }

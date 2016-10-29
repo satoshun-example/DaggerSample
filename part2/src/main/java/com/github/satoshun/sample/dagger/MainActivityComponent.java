@@ -12,19 +12,19 @@ import io.reactivex.disposables.CompositeDisposable;
 @Subcomponent(modules = MainActivityComponent.MainActivityModule.class)
 public interface MainActivityComponent extends MembersInjector<MainActivity> {
 
-  @Subcomponent.Builder
-  interface Builder extends BaseBuilder<MainActivityComponent> {
+  @Subcomponent.Builder interface Builder extends BaseBuilder<MainActivityComponent> {
     Builder activityModule(MainActivityModule module);
   }
 
-  @Module
-  class MainActivityModule extends BaseActivityModule<MainActivity> {
+  @Module class MainActivityModule extends BaseActivityModule<MainActivity> {
 
     public MainActivityModule(MainActivity activity) {
       super(activity);
     }
 
-    @Provides @ActivityScope public static CompositeDisposable provideCompositeDisposable() {
+    @Provides
+    @ActivityScope
+    public static CompositeDisposable provideCompositeDisposable() {
       return new CompositeDisposable();
     }
   }

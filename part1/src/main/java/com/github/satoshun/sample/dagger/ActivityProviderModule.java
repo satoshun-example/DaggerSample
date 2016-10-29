@@ -12,11 +12,9 @@ import dagger.Module;
 })
 public abstract class ActivityProviderModule {
 
-  @Binds
   @QualifierClass(MainActivity.class)
   public abstract MainActivityComponent.Builder provideMainActivityComponentBuilder(MainActivityComponent.Builder builder);
 
-  @Binds
   @QualifierClass(SubActivity.class)
   public abstract SubActivityComponent.Builder provideSubActivityComponentBuilder(SubActivityComponent.Builder builder);
 }

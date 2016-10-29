@@ -5,6 +5,7 @@ import com.github.satoshun.sample.dagger.top.MainActivity;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.multibindings.IntoMap;
 
 @Module(subcomponents = {
         MainActivityComponent.class,
@@ -13,10 +14,12 @@ import dagger.Module;
 public abstract class ActivityProviderModule {
 
   @Binds
-  @QualifierClass(MainActivity.class)
-  public abstract MainActivityComponent.Builder provideMainActivityComponentBuilder(MainActivityComponent.Builder builder);
+  @IntoMap
+  @ActivityKey(MainActivity.class)
+  public abstract BaseBuilder provideMainActivityComponentBuilder(MainActivityComponent.Builder builder);
 
   @Binds
-  @QualifierClass(SubActivity.class)
-  public abstract SubActivityComponent.Builder provideSubActivityComponentBuilder(SubActivityComponent.Builder builder);
+  @IntoMap
+  @ActivityKey(SubActivity.class)
+  public abstract BaseBuilder provideSubActivityComponentBuilder(SubActivityComponent.Builder builder);
 }
