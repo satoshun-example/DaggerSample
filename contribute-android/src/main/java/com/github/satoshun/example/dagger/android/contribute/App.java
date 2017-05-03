@@ -1,7 +1,9 @@
 package com.github.satoshun.example.dagger.android.contribute;
 
 import com.github.satoshun.example.dagger.android.contribute.main.MainActivity;
+import com.github.satoshun.example.dagger.android.contribute.main.MainActivityModule;
 import com.github.satoshun.example.dagger.android.contribute.main.MainFragment;
+import com.github.satoshun.example.dagger.android.contribute.main.MainFragmentModule;
 import com.github.satoshun.example.dagger.android.contribute.sub.SubActivity;
 import com.github.satoshun.example.dagger.android.contribute.sub.SubActivityFragment;
 
@@ -31,7 +33,7 @@ public class App extends DaggerApplication {
   @Module
   abstract class InjectorsModule {
     @ActivityScope
-    @ContributesAndroidInjector(modules = {MainActivity.Module.class, MainActivityBindModule.class})
+    @ContributesAndroidInjector(modules = {MainActivityModule.class, MainActivityBindModule.class})
     abstract MainActivity mainActivity();
 
     @ActivityScope
@@ -42,7 +44,7 @@ public class App extends DaggerApplication {
   @Module
   abstract class MainActivityBindModule {
     @FragmentScope
-    @ContributesAndroidInjector(modules = {MainFragment.Module.class})
+    @ContributesAndroidInjector(modules = {MainFragmentModule.class})
     abstract MainFragment mainFragment();
   }
 

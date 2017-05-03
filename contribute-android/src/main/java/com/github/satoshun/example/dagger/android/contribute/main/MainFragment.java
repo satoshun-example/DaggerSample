@@ -5,17 +5,9 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-import dagger.Provides;
 import dagger.android.support.DaggerFragment;
 
 public class MainFragment extends DaggerFragment {
-
-  @dagger.Module
-  public static class Module {
-    @Provides float provideWeight() {
-      return 60;
-    }
-  }
 
   @Inject String message; // from App Component
   @Inject int tax; // from Activity Component

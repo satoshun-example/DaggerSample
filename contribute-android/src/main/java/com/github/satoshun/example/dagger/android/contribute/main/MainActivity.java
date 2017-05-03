@@ -1,45 +1,45 @@
 package com.github.satoshun.example.dagger.android.contribute.main;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.satoshun.example.dagger.android.contribute.R;
+import com.github.satoshun.example.dagger.android.contribute.databinding.MainActBinding;
 import com.github.satoshun.example.dagger.android.contribute.sub.SubActivity;
 
 import javax.inject.Inject;
 
-import dagger.Provides;
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class MainActivity extends DaggerAppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity implements MainContract.View {
 
-  @dagger.Module
-  public static class Module {
-    @Provides int provideTax() {
-      return 10;
-    }
-  }
+  @Inject MainPresenter presenter;
 
   @Inject String message; // from App Component
   @Inject int tax; // from Activity Component
 
+  private MainActBinding binding;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.main_act);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+    binding = DataBindingUtil.setContentView(this, R.layout.main_act);
+    setSupportActionBar(binding.toolbar);
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
+    binding.fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         startActivity(new Intent(MainActivity.this, SubActivity.class));
+      }
+    });
+    binding.content.edit.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        presenter.doTask();
       }
     });
 
@@ -56,14 +56,17 @@ public class MainActivity extends DaggerAppCompatActivity {
     return true;
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
+  @Override public void addTask(String task) {
+    TextView view = new TextView(this);
+    view.setText(task);
+    binding.content.container.addView(view);
+  }
 
-    if (id == R.id.action_settings) {
-      return true;
-    }
+  @Override public void showMessage(String message) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
 
-    return super.onOptionsItemSelected(item);
+  @Override public void showErrorMessage(String errorMessage) {
+    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
   }
 }
