@@ -1,2 +1,4 @@
 include ':part1'
 include ':part2'
+include ':android'
+include ':contribute-android'
