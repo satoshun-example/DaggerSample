@@ -1,5 +1,8 @@
 package com.github.satoshun.example.dagger.android;
 
+import com.github.satoshun.example.dagger.android.main.MainActivity;
+import com.github.satoshun.example.dagger.android.sub.SubActivity;
+
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import dagger.android.support.DaggerApplication;
@@ -10,6 +13,7 @@ public class App extends DaggerApplication {
       modules = {
           AndroidSupportInjectionModule.class,
           MainActivity.Module.class,
+          SubActivity.Module.class,
           BuildModule.class
       }
   ) interface Component extends AndroidInjector<App> {

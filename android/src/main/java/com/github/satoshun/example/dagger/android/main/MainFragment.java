@@ -1,6 +1,5 @@
-package com.github.satoshun.example.dagger.android;
+package com.github.satoshun.example.dagger.android.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,14 +15,14 @@ import dagger.multibindings.IntoMap;
 public class MainFragment extends DaggerFragment {
 
   @dagger.Subcomponent(modules = BuildModule.class)
-  interface Component extends AndroidInjector<MainFragment> {
+  public interface Component extends AndroidInjector<MainFragment> {
     @dagger.Subcomponent.Builder
     abstract class Builder extends AndroidInjector.Builder<MainFragment> {
     }
   }
 
   @dagger.Module
-  static class BuildModule {
+  public static class BuildModule {
     @Provides
     float provideWeight() {
       return 60;
@@ -31,7 +30,7 @@ public class MainFragment extends DaggerFragment {
   }
 
   @dagger.Module(subcomponents = MainFragment.Component.class)
-  abstract static class Module {
+  public abstract static class Module {
 
     @Binds
     @IntoMap
@@ -42,10 +41,6 @@ public class MainFragment extends DaggerFragment {
   @Inject String message;
   @Inject int tax;
   @Inject float weight;
-
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-  }
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

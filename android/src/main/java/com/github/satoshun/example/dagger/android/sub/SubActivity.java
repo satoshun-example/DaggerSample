@@ -1,13 +1,13 @@
-package com.github.satoshun.example.dagger.android;
+package com.github.satoshun.example.dagger.android.sub;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+
+import com.github.satoshun.example.dagger.android.R;
 
 import javax.inject.Inject;
 
@@ -18,32 +18,32 @@ import dagger.android.AndroidInjector;
 import dagger.android.support.DaggerAppCompatActivity;
 import dagger.multibindings.IntoMap;
 
-public class MainActivity extends DaggerAppCompatActivity {
+public class SubActivity extends DaggerAppCompatActivity {
 
   @dagger.Subcomponent(
-      modules = {MainFragment.Module.class, BuildModule.class}
-  ) interface Component extends AndroidInjector<MainActivity> {
+      modules = {SubActivityFragment.Module.class, SubActivity.BuildModule.class}
+  ) public interface Component extends AndroidInjector<SubActivity> {
 
     @dagger.Subcomponent.Builder
-    abstract class Builder extends AndroidInjector.Builder<MainActivity> {
+    abstract class Builder extends AndroidInjector.Builder<SubActivity> {
     }
   }
 
   @dagger.Module
-  static class BuildModule {
+  public static class BuildModule {
     @Provides
     int provideTax() {
-      return 10;
+      return 100;
     }
   }
 
-  @dagger.Module(subcomponents = Component.class)
-  abstract static class Module {
+  @dagger.Module(subcomponents = SubActivity.Component.class)
+  public abstract static class Module {
 
     @Binds
     @IntoMap
-    @ActivityKey(MainActivity.class)
-    abstract AndroidInjector.Factory<? extends Activity> bind(Component.Builder builder);
+    @ActivityKey(SubActivity.class)
+    abstract AndroidInjector.Factory<? extends Activity> bind(SubActivity.Component.Builder builder);
   }
 
   @Inject String message;
@@ -52,7 +52,7 @@ public class MainActivity extends DaggerAppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.main_act);
+    setContentView(R.layout.sub_activity);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -64,28 +64,5 @@ public class MainActivity extends DaggerAppCompatActivity {
             .setAction("Action", null).show();
       }
     });
-
-    if (getSupportFragmentManager().findFragmentByTag("retain") == null) {
-      getSupportFragmentManager().beginTransaction()
-          .add(new MainFragment(), "retain")
-          .commit();
-    }
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.menu_main, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
-
-    if (id == R.id.action_settings) {
-      return true;
-    }
-
-    return super.onOptionsItemSelected(item);
   }
 }
