@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.satoshun.example.dagger.android.FragmentScope;
 import com.github.satoshun.example.dagger.android.R;
 
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import dagger.multibindings.IntoMap;
 
 public class SubActivityFragment extends DaggerFragment {
 
+  @FragmentScope
   @dagger.Subcomponent(modules = SubActivityFragment.BuildModule.class)
   public interface Component extends AndroidInjector<SubActivityFragment> {
     @dagger.Subcomponent.Builder

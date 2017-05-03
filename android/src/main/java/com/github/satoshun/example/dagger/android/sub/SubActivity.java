@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.github.satoshun.example.dagger.android.ActivityScope;
 import com.github.satoshun.example.dagger.android.R;
 
 import javax.inject.Inject;
@@ -20,10 +21,10 @@ import dagger.multibindings.IntoMap;
 
 public class SubActivity extends DaggerAppCompatActivity {
 
+  @ActivityScope
   @dagger.Subcomponent(
       modules = {SubActivityFragment.Module.class, SubActivity.BuildModule.class}
   ) public interface Component extends AndroidInjector<SubActivity> {
-
     @dagger.Subcomponent.Builder
     abstract class Builder extends AndroidInjector.Builder<SubActivity> {
     }

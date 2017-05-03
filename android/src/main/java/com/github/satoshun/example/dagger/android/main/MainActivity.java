@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.satoshun.example.dagger.android.ActivityScope;
 import com.github.satoshun.example.dagger.android.R;
 import com.github.satoshun.example.dagger.android.sub.SubActivity;
 
@@ -23,10 +24,10 @@ import dagger.multibindings.IntoMap;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
+  @ActivityScope
   @dagger.Subcomponent(
       modules = {MainFragment.Module.class, BuildModule.class}
   ) public interface Component extends AndroidInjector<MainActivity> {
-
     @dagger.Subcomponent.Builder
     abstract class Builder extends AndroidInjector.Builder<MainActivity> {
     }

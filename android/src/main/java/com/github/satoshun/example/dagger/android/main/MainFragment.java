@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.github.satoshun.example.dagger.android.FragmentScope;
+
 import javax.inject.Inject;
 
 import dagger.Binds;
@@ -14,6 +16,7 @@ import dagger.multibindings.IntoMap;
 
 public class MainFragment extends DaggerFragment {
 
+  @FragmentScope
   @dagger.Subcomponent(modules = BuildModule.class)
   public interface Component extends AndroidInjector<MainFragment> {
     @dagger.Subcomponent.Builder
