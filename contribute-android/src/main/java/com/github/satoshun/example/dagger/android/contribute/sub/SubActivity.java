@@ -10,17 +10,9 @@ import com.github.satoshun.example.dagger.android.contribute.R;
 
 import javax.inject.Inject;
 
-import dagger.Provides;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class SubActivity extends DaggerAppCompatActivity {
-
-  @dagger.Module
-  public static class Module {
-    @Provides int provideTax() {
-      return 100;
-    }
-  }
 
   @Inject String message; // from App Component
   @Inject int tax; // from Activity Component
